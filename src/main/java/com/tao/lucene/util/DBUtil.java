@@ -26,7 +26,7 @@ public class DBUtil {
         }
     };
 
-    public static synchronized DBUtil getInstance() throws Exception {
+    public static synchronized DBUtil getInstance() {
         if(dbUtil==null){
             dbUtil = new DBUtil();
         }
@@ -83,6 +83,8 @@ public class DBUtil {
                 }
                 results.add(record);
             }
+            ps.close();
+            conn.close();
         }
         return results;
     }

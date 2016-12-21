@@ -2,6 +2,7 @@ package com.tao.lucene.dao;
 
 import com.tao.lucene.po.Book;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface BookDao {
     //查询书籍
-    public List<Book> queryBooks();
+    public List<Book> queryBooks(String sql) throws SQLException;
 }
