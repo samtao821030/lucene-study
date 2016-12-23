@@ -8,8 +8,16 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -64,4 +72,25 @@ public class BookService {
         writer.close();
         System.out.println();
     }
+
+    @Test
+    public void searchIndex() throws IOException, ParseException {
+        Directory directory = FSDirectory.open(new File("E:\\study\\lucene\\index"));
+        IndexReader reader = DirectoryReader.open(directory);
+        IndexSearcher searcher = new IndexSearcher(reader);
+        QueryParser parser = new QueryParser("description",new StandardAnalyzer());
+        Query query = parser.parse("description:spring");
+        TopDocs topDocs = searcher.search(query,10);
+        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+        for(ScoreDoc scoreDoc:scoreDocs){
+            int docId = scoreDoc.doc;
+            Document document = searcher.doc(docId);
+            System.out.println("name:"+document.get("name"));
+            System.out.println("price:"+document.get("price"));
+            System.out.println("description:"+document.get("description"));
+        }
+
+    }
+
+
 }
