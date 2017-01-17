@@ -24,8 +24,8 @@ public class IndexManager {
     @Test
     public void deleteIndex() throws IOException, SolrServerException{
         HttpSolrServer server = new HttpSolrServer("http://localhost:8080/solr");
-
         server.deleteById("c001");
+
         server.commit();
     }
 
